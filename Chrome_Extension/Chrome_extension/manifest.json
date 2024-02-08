@@ -1,0 +1,11 @@
+{
+    "manifest_version": 3,
+    "name": "Hi Extension",
+    "version": "1.0",
+    "description": "A super easy Chrome extension that says hi",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "permissions": ["activeTab"]
+  }
+  
