@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popup Window Example</title>
+<script>
+function openPopup() {
+    var width = 800;
+    var height = 600;
+    var leftPosition = (screen.width - width) / 2;
+    var topPosition = (screen.height - height) / 2;
+    var options = 'width=' + width + ',height=' + height + ',left=' + leftPosition + ',top=' + topPosition;
+    window.open('popup.html', 'PopupWindow', options);
+}
+</script>
+</head>
+<body>
+<button onclick="openPopup()">Open Popup</button>
+</body>
+</html>

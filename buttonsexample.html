@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button Text Display</title>
+<script>
+function displayText(buttonId) {
+    var textToShow = "";
+    switch(buttonId) {
+        case "us":
+            textToShow = "Text for US button.";
+            break;
+        case "europe":
+            textToShow = "Text for Europe button.";
+            break;
+        case "india":
+            textToShow = "Text for India button.";
+            break;
+        case "russia":
+            textToShow = "Text for Russia button.";
+            break;
+        case "china":
+            textToShow = "Text for China button.";
+            break;
+        default:
+            textToShow = "Unknown button.";
+    }
+    document.getElementById("textDisplay").textContent = textToShow;
+}
+</script>
+</head>
+<body>
+<button id="us" onclick="displayText('us')">US</button>
+<button id="europe" onclick="displayText('europe')">Europe</button>
+<button id="india" onclick="displayText('india')">India</button>
+<button id="russia" onclick="displayText('russia')">Russia</button>
+<button id="china" onclick="displayText('china')">China</button>
+<div id="textDisplay"></div>
+</body>
+</html>
