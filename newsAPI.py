@@ -1,20 +1,14 @@
-import requests
+from newsapi import NewsApiClient
+import urllib
+newsapi = NewsApiClient(api_key='35fcaa0b17104f39a0577eafe921d94e')
 
-def fetch_article(api_key, query, language):
-    url = f"https://newsapi.org/v2/everything?q={query}&apiKey={api_key}&pageSize=1&language={language}"
-    response = requests.get(url)
-    data = response.json()
-    
-    if data["totalResults"] > 0:
-        article = data["articles"][0]
-        print("Title:", article["title"])
-        print("Source:", article["source"]["name"])
-        print("Published At:", article["publishedAt"])
-        print("Content:", article["content"])
-    else:
-        print("No articles found for the query:", query)
+def get_articles_with_keyword(keywords):
+    query_string = " AND ".join(s.lower() for s in keywords)
+    # query_string = urllib.parse.quote(query_string)
+    response = newsapi.get_everything(q=query_string, sort_by="relevancy")
+    return response
 
-api_key = "371a76c13f6c43cb828a1933781f7947"
-query = "Duquesne"
-language = "us"  # Specify the language here, e.g., "en" for English
-fetch_article(api_key, query, country)
+def get_num_sources():
+    sources = newsapi.get_sources()
+    length = len(sources['sources'])
+    return length
