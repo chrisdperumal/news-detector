@@ -1,6 +1,10 @@
 from newsapi import NewsApiClient
 import urllib
-newsapi = NewsApiClient(api_key='35fcaa0b17104f39a0577eafe921d94e')
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+newsapi = NewsApiClient(api_key=os.environ.get("NEWS_API_KEY"))
 
 def get_articles_with_keyword(keywords):
     query_string = " AND ".join(s.lower() for s in keywords)

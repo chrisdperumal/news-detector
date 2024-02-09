@@ -1,10 +1,12 @@
 from openai import OpenAI
 import os
-
+import os
+from dotenv import load_dotenv
 
 class chatGPT:
     def __init__(self):
-        self.chatGPT_env_acces_key = "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"
+        load_dotenv()
+        self.chatGPT_env_acces_key = os.environ.get("CHAT_GPT_API_KEY")
         self.current_quote = None
 
     def createQuoteFirstTime(self):
