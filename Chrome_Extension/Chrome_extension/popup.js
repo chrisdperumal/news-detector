@@ -1,29 +1,23 @@
-// popup.js
-
-chrome.storage.local.get("title", function(data) {
-    document.getElementById("title").textContent = data.title || "No title found.";
-  });
-  
-
-  // popup.js
+const spacy = require('spacy');
+const nlp = spacy.load("en_core_web_sm");
 
 // Function to display text based on button click
 function displayText(buttonId) {
     var textToShow = "";
     switch(buttonId) {
-        case "us":
+        case "United States":
             textToShow = "US's viewpoint is:";
             break;
-        case "europe":
+        case "Germany":
             textToShow = "Europe's viewpoint is";
             break;
-        case "india":
+        case "India":
             textToShow = "Text for India button.";
             break;
-        case "russia":
+        case "Russia":
             textToShow = "Text for Russia button.";
             break;
-        case "china":
+        case "China":
             textToShow = "Text for China button.";
             break;
         default:
@@ -41,22 +35,59 @@ function displayInitialText() {
 displayInitialText();
 
 // Add event listeners to the buttons
-document.getElementById("us").addEventListener("click", function() {
-    displayText("us");
+document.getElementById("United States").addEventListener("click", function() {
+    displayText("United States");
 });
 
-document.getElementById("europe").addEventListener("click", function() {
-    displayText("europe");
+document.getElementById("Germany").addEventListener("click", function() {
+    displayText("Germany");
 });
 
-document.getElementById("india").addEventListener("click", function() {
-    displayText("india");
+document.getElementById("India").addEventListener("click", function() {
+    displayText("India");
 });
 
-document.getElementById("russia").addEventListener("click", function() {
-    displayText("russia");
+document.getElementById("Russia").addEventListener("click", function() {
+    displayText("Russia");
 });
 
-document.getElementById("china").addEventListener("click", function() {
-    displayText("china");
+document.getElementById("China").addEventListener("click", function() {
+    displayText("China");
+});
+
+// Function to fetch keywords from the title
+function fetchKeywords(title) {
+    // Implement the function to extract hot words from the title
+    const result = [];
+    const posTag = ['PROPN', 'ADJ', 'NOUN'];
+    const doc = nlp(title.toLowerCase()); // Assuming nlp is defined
+    for (const token of doc) {
+        if (nlp.Defaults.stopWords.includes(token.text) || punctuation.includes(token.text)) {
+            continue;
+        }
+        if (posTag.includes(token.pos_)) {
+            result.push(token.text);
+        }
+    }
+    // Display hot words in the HTML
+    document.getElementById("hotwords").textContent = result.join(", ");
+}
+
+// Retrieve and display title
+chrome.storage.local.get("title", function(data) {
+    document.getElementById("title").textContent = data.title || "No title found.";
+    // Call fetchKeywords function with the title
+    fetchKeywords(data.title);
+});
+
+
+// Retrieve and display hotwords
+chrome.storage.local.get("hotwords", function(data) {
+    const hotwordsElement = document.getElementById("hotwords");
+    const hotwords = data.hotwords || [];
+    if (hotwords.length > 0) {
+        hotwordsElement.textContent = "Hotwords: " + hotwords.join(", ");
+    } else {
+        hotwordsElement.textContent = "No hotwords found.";
+    }
 });
