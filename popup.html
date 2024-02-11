@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popup Window with Buttons</title>
+<script>
+function displayText(buttonId) {
+    var textToShow = "";
+    switch(buttonId) {
+        case "us":
+            textToShow = "Us's viewpoint is:";
+            break;
+        case "europe":
+            textToShow = "Europe's viewpoint is";
+            break;
+        case "india":
+            textToShow = "Text for India button.";
+            break;
+        case "russia":
+            textToShow = "Text for Russia button.";
+            break;
+        case "china":
+            textToShow = "Text for China button.";
+            break;
+        default:
+            textToShow = "Unknown button.";
+    }
+    document.getElementById("textDisplay").textContent = textToShow;
+}
+
+// Function to display initial text before any button is clicked
+function displayInitialText() {
+    document.getElementById("textDisplay").textContent = "Short summary on what differences can be seen in different countries viewpoints:";
+}
+</script>
+</head>
+<body>
+<div id="initialText"></div>
+<button id="us" onclick="displayText('us')">US</button>
+<button id="europe" onclick="displayText('europe')">Europe</button>
+<button id="india" onclick="displayText('india')">India</button>
+<button id="russia" onclick="displayText('russia')">Russia</button>
+<button id="china" onclick="displayText('china')">China</button>
+<div id="textDisplay"></div>
+
+<script>
+// Call the function to display initial text when the page loads
+displayInitialText();
+</script>
+
+</body>
+</html>
