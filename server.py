@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify
-import newsAPI
 from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
 
@@ -21,12 +20,12 @@ def hello_world():
 def handle_post():
     # Retrieve JSON data from the request
     keywords = request.get_json()
-    all_articles = newsAPI.get_articles_from_keywords(keywords)
+    all_articles = news_fetcher.get_articles_from_keywords(keywords)
     num_articles = all_articles['totalResults']
 
     # You can process the data here
     article = all_articles['articles'][0]['content']
-    summary = chat_gpt_object.get_summary_from_article(article) 
+    summary = chat_gpt_object.get_summary_from_article(article)
 
     print(summary)
 

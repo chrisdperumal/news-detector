@@ -41,3 +41,23 @@ function fetchHotWordsfromTitle(title) {
   // Display hot words or do any further processing here
   console.log(result);
 }
+
+function getSummaryFromKeywords(keywords){
+  fetch('http://localhost:3000/v1/keywords', {
+    method: 'POST', // Specify the method
+    headers: {
+      'Content-Type': 'application/json', // Specify the content type
+    },
+    body: JSON.stringify({
+      key: JSON.stringify(keywords), // Your data goes here
+    }),
+  })
+  .then(response => response.json()) // Parse the response as JSON
+  .then(data => {
+    console.log(data); // Handle the data from the API
+  })
+  .catch(error => {
+      console.error('Error:', error); // Handle any errors
+  });
+  
+}

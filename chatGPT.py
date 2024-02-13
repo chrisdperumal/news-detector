@@ -1,14 +1,11 @@
 from openai import OpenAI
 import os
-import os
 from dotenv import load_dotenv
 
 class ChatGPTDriver:
     def __init__(self):
         load_dotenv()
-        self.chatGPT_env_acces_key = os.environ.get("CHAT_GPT_API_KEY")
-
-        os.environ["OPENAI_API_KEY"] = self.chatGPT_env_acces_key
+        # os.environ["OPENAI_API_KEY"] = self.chatGPT_env_acces_key
         self.client = OpenAI()
 
         self.current_quote = None
@@ -26,7 +23,7 @@ class ChatGPTDriver:
         first_quote = completion.choices[0].message
         self.current_quote = first_quote
         return first_quote
-    
+
     def get_summary_from_article(self, article):
 
         request = self.client.chat.completions.create(
