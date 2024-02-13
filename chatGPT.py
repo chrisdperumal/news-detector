@@ -3,7 +3,7 @@ import os
 import os
 from dotenv import load_dotenv
 
-class chatGPT:
+class ChatGPTDriver:
     def __init__(self):
         load_dotenv()
         self.chatGPT_env_acces_key = os.environ.get("CHAT_GPT_API_KEY")

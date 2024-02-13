@@ -2,16 +2,30 @@ from newsapi import NewsApiClient
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
-newsapi = NewsApiClient(api_key=os.environ.get("NEWS_API_KEY"))
+class NewsFetcher:
+    def __init__(self):
+        # Load environment variables
+        load_dotenv()
+        # Initialize NewsApiClient with API key
+        self.newsapi = NewsApiClient(api_key=os.getenv("NEWS_API_KEY"))
 
-def get_articles_from_keywords(keywords):
-    query_string = " AND ".join(s.lower() for s in keywords)
-    # query_string = urllib.parse.quote(query_string)
-    response = newsapi.get_everything(q=query_string, sort_by="relevancy")
-    return response
+    def get_articles_from_keywords(self, keywords):
+        """
+        Fetch articles based on the given list of keywords.
 
-def get_num_sources():
-    sources = newsapi.get_sources()
-    length = len(sources['sources'])
-    return length
+        :param keywords: List of keywords to search for.
+        :return: Response from the News API.
+        """
+        query_string = " AND ".join(s.lower() for s in keywords)
+        response = self.newsapi.get_everything(q=query_string, sort_by="relevancy")
+        return response
+
+    def get_num_sources(self):
+        """
+        Get the total number of sources available in the News API.
+
+        :return: The number of sources.
+        """
+        sources = self.newsapi.get_sources()
+        length = len(sources['sources'])
+        return length

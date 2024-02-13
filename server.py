@@ -1,11 +1,13 @@
 from flask import Flask, request, jsonify
 import newsAPI
-import chatGPT as cgpt
+from chatGPT import ChatGPTDriver
+from newsAPI import NewsFetcher
 
 app = Flask(__name__)
 
 # Creating this globally will allow us to remember the entire chat session
-chat_gpt_object = cgpt.chatGPT()
+chat_gpt_object = ChatGPTDriver()
+news_fetcher = NewsFetcher()
 
 #make calls to this server from chrome extension
 
