@@ -1,13 +1,19 @@
 from flask import Flask, request, jsonify
 from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
+from getArticleContent import getArticleContent
 import extractKeywords
+import sys
+print(sys.path)
+import spacy
+
 
 app = Flask(__name__)
 # runs on default on port 5000
 # Creating this globally will allow us to remember the entire chat session
 chat_gpt_object = ChatGPTDriver()
 news_fetcher = NewsFetcher()
+article_content_fetcher = getArticleContent
 
 #make calls to this server from chrome extension
 
@@ -31,10 +37,24 @@ def handle_post():
     print( num_articles)
 
     # You can process the data here
-    article = all_articles['articles'][0]['content']
-    print(article)
-    summary = chat_gpt_object.get_summary_from_article(article)
+    article_url = all_articles['articles'][0]['url']
+    
+   # randomURL = 'https://www.bbc.com/news/world-europe-68255490'
+    articleContent = article_content_fetcher.fetch_article_content(article_url)
+    
+    # Tokenize the article content
+    tokens = tokenize_text(articleContent)
+    print(tokens)
+    
+    
+    # You can process the truncated content here to get the summary
+    summary = chat_gpt_object.get_summary_from_article(tokens)
 
+    print("OOOOOOOOOOOOOOOOOOOOOO ")
+
+    print("This is my SUMMMMAAARY ")
+    print(summary)
+    print("OOOOOOOOOOOOOOOOOOOOOO ")
 
     summary_text = str(summary)  # Assuming summary is a string
     print(summary_text)
@@ -55,5 +75,25 @@ def handle_post_getkw():
     print("Keywords extracted:", title_keywords)
     return jsonify({"keywords": list(title_keywords)}), 200
 
+
+
+import spacy
+
+# Load the English tokenizer, tagger, parser, NER, and word vectors
+nlp = spacy.load("en_core_web_sm")
+
+def tokenize_text(text, max_tokens=3000):
+    # Process the text with spaCy
+    doc = nlp(text)
+    
+    # Extract tokens from the processed document
+    tokens = [token.text for token in doc]
+    
+    # Limit the number of tokens
+    tokens = tokens[:max_tokens]
+        # Convert the tokens back to a single string
+    text = ' '.join(tokens)
+    
+    return text
 
 
