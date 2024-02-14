@@ -12,7 +12,9 @@ function fetchTitle(url) {
     .then(html => {
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
-      const title = doc.querySelector("title").innerText;
+      //const title = doc.querySelector("title").innerText; // IF TITLE AND NEWSPAPER COMPANY IS NEEDED
+      const title = doc.querySelector("title").innerText.split(" - ")[0]; // ONLY TITLE
+
       chrome.runtime.sendMessage({ message: "show_title", title: title });
     })
     .catch(error => {
@@ -20,5 +22,3 @@ function fetchTitle(url) {
       chrome.runtime.sendMessage({ message: "show_error", error: error });
     });
 }
-
-
