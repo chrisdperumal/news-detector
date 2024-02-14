@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
+import extractKeywords
 
 app = Flask(__name__)
 # runs on default on port 5000
@@ -32,3 +33,18 @@ def handle_post():
 
     # For this example, just send back the received JSON
     return jsonify({"received": summary}), 200
+
+
+@app.route('/v1/getkeywords', methods=['POST'])
+def handle_post_getkw():
+    # Retrieve JSON data from the request
+    data = request.get_json()
+    
+    title = data.get('title')
+    title_keywords =extractKeywords.extract_keywords(title)
+    
+    print("Keywords extracted:", title_keywords)
+    return jsonify({"keywords": list(title_keywords)}), 200
+
+
+

@@ -25,10 +25,4 @@ def filter_nouns(title_keywords):
             nouns.add(word)
     return nouns
 
-# Example usage:
-article_title = "Zelensky fires Ukraine's military chief in major shakeup nearly two years into war"
-keywords = extract_keywords(article_title)
-print("Keywords extracted from the title:", keywords)
 
-nouns_only = filter_nouns(keywords)
-print("Nouns only:", nouns_only)
