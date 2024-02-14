@@ -16,7 +16,6 @@ def hello_world():
     hello_world_string = "<p>Welcome to News Analyzer</p>"
     return(hello_world_string)
 
-#This endpoint listends to the POST request made by JavaScript
 @app.route('/v1/getSummary', methods=['POST'])
 def handle_post():
     print("Hello Maxi")
@@ -29,10 +28,13 @@ def handle_post():
     article = all_articles['articles'][0]['content']
     summary = chat_gpt_object.get_summary_from_article(article)
 
-    print(summary)
+
+    summary_text = str(summary)  # Assuming summary is a string
+    print(summary_text)
 
     # For this example, just send back the received JSON
-    return jsonify({"received": summary}), 200
+    return jsonify({"summary_text": summary_text}), 200
+
 
 
 @app.route('/v1/getkeywords', methods=['POST'])

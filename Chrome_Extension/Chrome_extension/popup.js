@@ -33,9 +33,7 @@ function fetchKeywordsFromServer(title) {
     });
 }
 
-// Function to fetch summary from keywords and display in HTML
 function fetchSummaryFromKeywords(keywords) {
-    // Send a POST request to the server to fetch summary
     fetch('http://localhost:5000/v1/getSummary', {
         method: 'POST',
         headers: {
@@ -45,8 +43,10 @@ function fetchSummaryFromKeywords(keywords) {
     })
     .then(response => response.json())
     .then(data => {
-        // Display the summary in the HTML
-        const summaryElement = document.getElementById("keywordSummary");
+        const summaryElement = document.getElementById("summary_text");
+        console.log("HELLO MAXI")
+        console.log(data)
+        console.log(data.received)
         if (data && data.received) {
             summaryElement.textContent = "Summary: " + data.received;
         } else {
@@ -57,6 +57,7 @@ function fetchSummaryFromKeywords(keywords) {
         console.error('Error:', error);
     });
 }
+
 
 // Function to display text based on button click
 function displayText(buttonId) {
