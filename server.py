@@ -1,13 +1,19 @@
 from flask import Flask, request, jsonify
 from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
+from getArticleContent import getArticleContent
 import extractKeywords
+import sys
+print(sys.path)
+import spacy
+
 
 app = Flask(__name__)
 # runs on default on port 5000
 # Creating this globally will allow us to remember the entire chat session
 chat_gpt_object = ChatGPTDriver()
 news_fetcher = NewsFetcher()
+article_content_fetcher = getArticleContent
 
 #make calls to this server from chrome extension
 
@@ -21,8 +27,14 @@ def handle_post():
     print("Hello Maxi")
     # Retrieve JSON data from the request
     keywords = request.get_json()
-    all_articles = news_fetcher.get_articles_from_keywords(keywords)
+    print("These are my keywords")
+    print(keywords)
+    all_articles = news_fetcher.get_articles_from_keywords(keywords['keywords'])
+
     num_articles = all_articles['totalResults']
+
+    print("nnum of articles")
+    print( num_articles)
 
     # Retrieve articles in a loop
     if(num_articles == 0):
@@ -67,5 +79,25 @@ def handle_post_getkw():
     print("Keywords extracted:", title_keywords)
     return jsonify({"keywords": list(title_keywords)}), 200
 
+
+
+import spacy
+
+# Load the English tokenizer, tagger, parser, NER, and word vectors
+nlp = spacy.load("en_core_web_sm")
+
+def tokenize_text(text, max_tokens=3000):
+    # Process the text with spaCy
+    doc = nlp(text)
+
+    # Extract tokens from the processed document
+    tokens = [token.text for token in doc]
+
+    # Limit the number of tokens
+    tokens = tokens[:max_tokens]
+        # Convert the tokens back to a single string
+    text = ' '.join(tokens)
+
+    return text
 
 
