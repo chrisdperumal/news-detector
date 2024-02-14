@@ -5,7 +5,6 @@ import extractKeywords
 
 app = Flask(__name__)
 # runs on default on port 5000
-
 # Creating this globally will allow us to remember the entire chat session
 chat_gpt_object = ChatGPTDriver()
 news_fetcher = NewsFetcher()
@@ -18,8 +17,9 @@ def hello_world():
     return(hello_world_string)
 
 #This endpoint listends to the POST request made by JavaScript
-@app.route('/v1/keywords', methods=['POST'])
+@app.route('/v1/getSummary', methods=['POST'])
 def handle_post():
+    print("Hello Maxi")
     # Retrieve JSON data from the request
     keywords = request.get_json()
     all_articles = news_fetcher.get_articles_from_keywords(keywords)
