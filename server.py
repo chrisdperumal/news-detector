@@ -24,13 +24,32 @@ def handle_post():
     all_articles = news_fetcher.get_articles_from_keywords(keywords)
     num_articles = all_articles['totalResults']
 
-    # You can process the data here
-    article = all_articles['articles'][0]['content']
-    summary = chat_gpt_object.get_summary_from_article(article)
+    # Retrieve articles in a loop
+    if(num_articles == 0):
+        return jsonify({"summary_text": "Cannot retrieve articles for this combination of keywords, try using less keywords"}), 200
 
+    if(num_articles < 10) : max_iterations = num_articles
+    else: max_iterations = 10
 
-    summary_text = str(summary)  # Assuming summary is a string
-    print(summary_text)
+    for i in range(num_articles):
+        # chat_gpt_object = ChatGPTDriver()
+        article_content = news_fetcher.get_article_content(all_articles['articles'][i]['url'])
+
+        if(article_content == None):
+            continue
+
+        article_content = news_fetcher.sanitize_content(article_content)
+
+        print(f'Content {i}')
+        print(article_content)
+
+        summary = chat_gpt_object.get_summary_from_article(article_content)
+        summary_text = str(summary.content)  # Assuming summary is a string
+
+        print(f'Summary {i}')
+        print(summary_text)
+        print()
+
 
     # For this example, just send back the received JSON
     return jsonify({"summary_text": summary_text}), 200
@@ -41,10 +60,10 @@ def handle_post():
 def handle_post_getkw():
     # Retrieve JSON data from the request
     data = request.get_json()
-    
+
     title = data.get('title')
     title_keywords =extractKeywords.extract_keywords(title)
-    
+
     print("Keywords extracted:", title_keywords)
     return jsonify({"keywords": list(title_keywords)}), 200
 

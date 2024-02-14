@@ -1,5 +1,7 @@
 from newsapi import NewsApiClient
 import os
+import requests
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 
 class NewsFetcher:
@@ -29,3 +31,25 @@ class NewsFetcher:
         sources = self.newsapi.get_sources()
         length = len(sources['sources'])
         return length
+
+    def get_article_content(self, url):
+        try:
+         response = requests.get(url)
+         if response.status_code == 200:
+             soup = BeautifulSoup(response.text, 'html.parser')
+             # Find and extract all text content
+             text_content = ' '.join([p.get_text() for p in soup.find_all('p')])
+             return text_content
+         else:
+             print("Error: Unable to fetch content. Status code:", response.status_code)
+             return None
+        except requests.exceptions.RequestException as e:
+            print("Error:", e)
+            return None
+
+    def sanitize_content(self, content):
+        # reduce the number of tokens
+        # remove stop words
+        # remove urls and hyperlinks
+        # remove extra/unnecessary spaces
+        return ""
