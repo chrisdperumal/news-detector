@@ -4,6 +4,7 @@ chrome.storage.local.get("title", function(data) {
     const title = data.title || "No title found.";
     titleElement.textContent = title;
     fetchKeywordsFromServer(title);
+    
 });
 
 // Function to fetch keywords from the server and display summary
@@ -46,9 +47,9 @@ function fetchSummaryFromKeywords(keywords) {
         const summaryElement = document.getElementById("summary_text");
         console.log("HELLO MAXI")
         console.log(data)
-        console.log(data.received)
-        if (data && data.received) {
-            summaryElement.textContent = "Summary: " + data.received;
+        console.log(data.summary_text)
+        if (data && data.summary_text) {
+            summaryElement.textContent = "Summary: " + data.summary_text;
         } else {
             summaryElement.textContent = "No summary found.";
         }

@@ -21,11 +21,18 @@ def handle_post():
     print("Hello Maxi")
     # Retrieve JSON data from the request
     keywords = request.get_json()
-    all_articles = news_fetcher.get_articles_from_keywords(keywords)
+    print("These are my keywords")
+    print(keywords)
+    all_articles = news_fetcher.get_articles_from_keywords(keywords['keywords'])
+    
     num_articles = all_articles['totalResults']
+    
+    print("nnum of articles")
+    print( num_articles)
 
     # You can process the data here
     article = all_articles['articles'][0]['content']
+    print(article)
     summary = chat_gpt_object.get_summary_from_article(article)
 
 

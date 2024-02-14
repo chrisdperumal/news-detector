@@ -16,6 +16,8 @@ class NewsFetcher:
         :param keywords: List of keywords to search for.
         :return: Response from the News API.
         """
+        print("In newsfetcher")
+        print(keywords)
         query_string = " AND ".join(s.lower() for s in keywords)
         response = self.newsapi.get_everything(q=query_string, sort_by="relevancy")
         return response
