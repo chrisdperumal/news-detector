@@ -23,23 +23,8 @@ function fetchTitle(url) {
 }
 
 function fetchHotWordsfromTitle(title) {
-  // Implement the function to extract hot words from the title
-  // You can use the provided Python code translated to JavaScript
+
   
-  const result = [];
-  const posTag = ['PROPN', 'ADJ', 'NOUN'];
-  const doc = nlp(title.toLowerCase()); // Assuming nlp is defined
-  for (const token of doc) {
-      if (nlp.Defaults.stopWords.includes(token.text) || punctuation.includes(token.text)) {
-          continue;
-      }
-      if (posTag.includes(token.pos_)) {
-          result.push(token.text);
-      }
-  }
-  
-  // Display hot words or do any further processing here
-  console.log(result);
 }
 
 function getSummaryFromKeywords(keywords){

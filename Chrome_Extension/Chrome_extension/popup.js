@@ -1,5 +1,30 @@
-const spacy = require('spacy');
-const nlp = spacy.load("en_core_web_sm");
+// Function to fetch keywords from the title
+function fetchKeywords(title) {
+    if (title) {
+        const result = [];
+        const posTag = ['PROPN', 'ADJ', 'NOUN'];
+        const doc = nlp(title.toLowerCase()); // Assuming nlp is defined
+        for (const token of doc) {
+            if (nlp.Defaults.stopWords.includes(token.text) || punctuation.includes(token.text)) {
+                continue;
+            }
+            if (posTag.includes(token.pos_)) {
+                result.push(token.text);
+            }
+        }
+        // Display hot words in the HTML
+        document.getElementById("hotwords").textContent = result.join(", ");
+    }
+}
+
+// Retrieve and display title
+chrome.storage.local.get("title", function(data) {
+    const titleElement = document.getElementById("title");
+    const title = data.title || "No title found.";
+    titleElement.textContent = title;
+    // Call fetchKeywords function with the title
+    fetchKeywords(title);
+});
 
 // Function to display text based on button click
 function displayText(buttonId) {
@@ -53,41 +78,4 @@ document.getElementById("Russia").addEventListener("click", function() {
 
 document.getElementById("China").addEventListener("click", function() {
     displayText("China");
-});
-
-// Function to fetch keywords from the title
-function fetchKeywords(title) {
-    // Implement the function to extract hot words from the title
-    const result = [];
-    const posTag = ['PROPN', 'ADJ', 'NOUN'];
-    const doc = nlp(title.toLowerCase()); // Assuming nlp is defined
-    for (const token of doc) {
-        if (nlp.Defaults.stopWords.includes(token.text) || punctuation.includes(token.text)) {
-            continue;
-        }
-        if (posTag.includes(token.pos_)) {
-            result.push(token.text);
-        }
-    }
-    // Display hot words in the HTML
-    document.getElementById("hotwords").textContent = result.join(", ");
-}
-
-// Retrieve and display title
-chrome.storage.local.get("title", function(data) {
-    document.getElementById("title").textContent = data.title || "No title found.";
-    // Call fetchKeywords function with the title
-    fetchKeywords(data.title);
-});
-
-
-// Retrieve and display hotwords
-chrome.storage.local.get("hotwords", function(data) {
-    const hotwordsElement = document.getElementById("hotwords");
-    const hotwords = data.hotwords || [];
-    if (hotwords.length > 0) {
-        hotwordsElement.textContent = "Hotwords: " + hotwords.join(", ");
-    } else {
-        hotwordsElement.textContent = "No hotwords found.";
-    }
 });

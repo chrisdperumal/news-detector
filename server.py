@@ -3,6 +3,7 @@ from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
 
 app = Flask(__name__)
+# runs on default on port 5000
 
 # Creating this globally will allow us to remember the entire chat session
 chat_gpt_object = ChatGPTDriver()
