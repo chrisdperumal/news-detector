@@ -3,9 +3,7 @@ from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
 from getArticleContent import getArticleContent
 import extractKeywords
-# import sys
-# print(sys.path)
-import spacy
+
 
 
 app = Flask(__name__)
@@ -16,7 +14,6 @@ news_fetcher = NewsFetcher()
 article_content_fetcher = getArticleContent
 
 #make calls to this server from chrome extension
-
 @app.route("/")
 def hello_world():
     hello_world_string = "<p>Welcome to News Analyzer</p>"
@@ -24,7 +21,6 @@ def hello_world():
 
 @app.route('/v1/getSummary', methods=['POST'])
 def handle_post():
-    print("Hello Maxi")
     # Retrieve JSON data from the request
     keywords = request.get_json()
     print("These are my keywords")
@@ -38,7 +34,7 @@ def handle_post():
 
     # Retrieve articles in a loop
     if(num_articles == 0):
-        return jsonify({"summary_text": "Cannot retrieve articles for this combination of keywords, try using less keywords"}), 200
+        return jsonify({"summary_text": "Cannot retrieve articles for this combination of keywords, try ua different article"}), 200
 
 
     if(num_articles < 10) : max_iterations = num_articles
@@ -69,16 +65,10 @@ def handle_post():
     
         
     biases_overArching= chat_gpt_object.get_over_arching_biases_from_summaries(summary_text)
-    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
-    print(biases_overArching)
     summarized_summaries = chat_gpt_object.get_summary_from_summaries(summary_text)
-    print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQq")
+    print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
     print(summarized_summaries)
     
-    
-    
-    # Convert list to a single string with elements separated by a space
-    keywords_string = ' '.join(keywords)
 
     # For this example, just send back the received JSON
     return jsonify({"summary_text": summarized_summaries, "biases_overArching": biases_overArching}), 200
@@ -95,9 +85,5 @@ def handle_post_getkw():
 
     print("Keywords extracted:", title_keywords)
     return jsonify({"keywords": list(title_keywords)}), 200
-
-
-
-
 
 

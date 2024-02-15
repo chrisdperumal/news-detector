@@ -54,7 +54,7 @@ class NewsFetcher:
             print("Error:", e)
             return None
 
-    def sanitize_content(self, content, max_tokens=3500):
+    def sanitize_content(self, content, max_tokens=3100):
         # reduce the number of tokens
         # remove stop words
         # remove urls and hyperlinks

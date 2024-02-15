@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "URL Extractor",
+  "name": "BIAS-CHECKER",
   "version": "1.0",
   "description": "Extracts the headline of the news article from the current page.",
   "permissions": ["activeTab", "storage"],

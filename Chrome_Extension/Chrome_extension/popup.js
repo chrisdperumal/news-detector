@@ -7,9 +7,9 @@ chrome.storage.local.get("title", function(data) {
     
 });
 
-// Function to fetch keywords from the server and display summary
 function fetchKeywordsFromServer(title) {
-    // Send a POST request to the server to fetch keywords
+
+    // Send a POST request to the server to fetch teh keywords
     fetch('http://localhost:5000/v1/getkeywords', {
         method: 'POST',
         headers: {
@@ -23,7 +23,7 @@ function fetchKeywordsFromServer(title) {
         const keywordsElement = document.getElementById("keywords");
         if (data && data.keywords) {
             keywordsElement.textContent = "Keywords: " + data.keywords.join(", ");
-            // Send another request to fetch the summary based on the keywords
+            // Send next request to fetch the summary based on the keywords
             fetchSummaryFromKeywords(data.keywords);
         } else {
             keywordsElement.textContent = "No keywords found.";
@@ -45,7 +45,7 @@ function fetchSummaryFromKeywords(keywords) {
     .then(response => response.json())
     .then(data => {
         const summaryElement = document.getElementById("summary_text");
-        const biasesElement = document.getElementById("biases_overArching"); // Get the biases_overArching element
+        const biasesElement = document.getElementById("biases_overArching");
 
         if (data && data.summary_text) {
             summaryElement.textContent = "Summary: " + data.summary_text;
@@ -53,7 +53,7 @@ function fetchSummaryFromKeywords(keywords) {
             summaryElement.textContent = "No summary found.";
         }
 
-        // Display biases_overArching in biasesElement
+        
         biasesElement.textContent = "Biases: " + data.biases_overArching;
     })
     .catch(error => {
