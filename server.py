@@ -3,8 +3,8 @@ from chatGPT import ChatGPTDriver
 from newsAPI import NewsFetcher
 from getArticleContent import getArticleContent
 import extractKeywords
-import sys
-print(sys.path)
+# import sys
+# print(sys.path)
 import spacy
 
 
@@ -40,14 +40,17 @@ def handle_post():
     if(num_articles == 0):
         return jsonify({"summary_text": "Cannot retrieve articles for this combination of keywords, try using less keywords"}), 200
 
-    if(num_articles < 10) : max_iterations = num_articles
-    else: max_iterations = 10
 
-    for i in range(num_articles):
-        # chat_gpt_object = ChatGPTDriver()
+    if(num_articles < 10) : max_iterations = num_articles
+    else: max_iterations = 5
+
+    summaries_string=""
+    for i in range(max_iterations):
+
         article_content = news_fetcher.get_article_content(all_articles['articles'][i]['url'])
 
         if(article_content == None):
+            print("There was no article content extracted")
             continue
 
         article_content = news_fetcher.sanitize_content(article_content)
@@ -62,9 +65,23 @@ def handle_post():
         print(summary_text)
         print()
 
+        summaries_string += f"{i}: {summary_text}"
+    
+        
+    biases_overArching= chat_gpt_object.get_over_arching_biases_from_summaries(summary_text)
+    print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
+    print(biases_overArching)
+    summarized_summaries = chat_gpt_object.get_summary_from_summaries(summary_text)
+    print("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQq")
+    print(summarized_summaries)
+    
+    
+    
+    # Convert list to a single string with elements separated by a space
+    keywords_string = ' '.join(keywords)
 
     # For this example, just send back the received JSON
-    return jsonify({"summary_text": summary_text}), 200
+    return jsonify({"summary_text": summarized_summaries, "biases_overArching": biases_overArching}), 200
 
 
 
@@ -81,23 +98,6 @@ def handle_post_getkw():
 
 
 
-import spacy
 
-# Load the English tokenizer, tagger, parser, NER, and word vectors
-nlp = spacy.load("en_core_web_sm")
-
-def tokenize_text(text, max_tokens=3000):
-    # Process the text with spaCy
-    doc = nlp(text)
-
-    # Extract tokens from the processed document
-    tokens = [token.text for token in doc]
-
-    # Limit the number of tokens
-    tokens = tokens[:max_tokens]
-        # Convert the tokens back to a single string
-    text = ' '.join(tokens)
-
-    return text
 
 

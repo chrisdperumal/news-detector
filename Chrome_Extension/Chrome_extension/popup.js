@@ -45,19 +45,22 @@ function fetchSummaryFromKeywords(keywords) {
     .then(response => response.json())
     .then(data => {
         const summaryElement = document.getElementById("summary_text");
-        console.log("HELLO MAXI")
-        console.log(data)
-        console.log(data.summary_text)
+        const biasesElement = document.getElementById("biases_overArching"); // Get the biases_overArching element
+
         if (data && data.summary_text) {
             summaryElement.textContent = "Summary: " + data.summary_text;
         } else {
             summaryElement.textContent = "No summary found.";
         }
+
+        // Display biases_overArching in biasesElement
+        biasesElement.textContent = "Biases: " + data.biases_overArching;
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
+
 
 
 // Function to display text based on button click

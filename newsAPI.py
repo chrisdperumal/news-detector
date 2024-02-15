@@ -3,6 +3,11 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+import spacy
+from spacy.lang.en.stop_words import STOP_WORDS
+
+# Load the English tokenizer, tagger, parser, NER, and word vectors
+nlp = spacy.load("en_core_web_sm")
 
 class NewsFetcher:
     def __init__(self):
@@ -49,9 +54,27 @@ class NewsFetcher:
             print("Error:", e)
             return None
 
-    def sanitize_content(self, content):
+    def sanitize_content(self, content, max_tokens=3500):
         # reduce the number of tokens
         # remove stop words
         # remove urls and hyperlinks
         # remove extra/unnecessary spaces
-        return ""
+               
+        
+        doc = nlp(content)
+
+        # Extract tokens from the processed document
+        tokens = [token.text for token in doc]
+
+        # Extract tokens, but without stop words
+        tokens = [token.text for token in doc if token.text.lower() not in STOP_WORDS]
+
+        # Limit the number of tokens
+        tokens = tokens[:max_tokens]
+            # Convert the tokens back to a single string
+        text = ' '.join(tokens)
+
+        return text
+
+
+
